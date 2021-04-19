@@ -9,7 +9,7 @@ docker run -p80:80 aeneas:latest
 ```
 Or use docker hub:
 ```
-docker run -p80:80 eduardsubert/aeneas:latest
+docker run -p80:80 eduardsubert/aeneas-server:latest
 ```
 
 ## Request
