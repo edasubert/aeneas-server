@@ -1,7 +1,7 @@
-from enum import Enum
-from tempfile import NamedTemporaryFile
-from pathlib import Path
 import shutil
+from enum import Enum
+from pathlib import Path
+from tempfile import NamedTemporaryFile
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from pydantic import BaseModel
@@ -9,7 +9,6 @@ from pydantic import BaseModel
 import aeneas.globalconstants as gc
 from aeneas.executetask import ExecuteTask
 from aeneas.language import Language
-from aeneas.syncmap import SyncMapFormat
 from aeneas.task import Task, TaskConfiguration
 from aeneas.textfile import TextFileFormat
 
@@ -27,6 +26,10 @@ class Message500(BaseModel):
 
 
 def convert_to_tempfile(file: UploadFile) -> NamedTemporaryFile:
+    """
+    Convert UploadFile to named temporary file. 
+    !!! Closes the UploadFile
+    """
     try:
         file.file.seek(0)
         suffix = Path(file.filename).suffix
@@ -55,13 +58,16 @@ def align_audio(
     language: LanguageEnum = Form(...), text_file_format: TextFileFormatEnum = Form(...), transcript: UploadFile = File(...), audio: UploadFile = File(...),
 ):  
     try:
+        # prepare config
         aeneas_config = TaskConfiguration()
         aeneas_config[gc.PPN_TASK_IS_TEXT_FILE_FORMAT] = text_file_format
         aeneas_config[gc.PPN_TASK_LANGUAGE] = language
         
+        # get named temporary files
         tmp_audio = convert_to_tempfile(audio)
         tmp_transcript = convert_to_tempfile(transcript)
 
+        # create task
         task = Task()
         task.configuration = aeneas_config
         task.audio_file_path_absolute = Path(tmp_audio.name)
