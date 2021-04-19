@@ -2,16 +2,21 @@
 Server implementation of Aeneas forced aligner (https://github.com/readbeyond/aeneas) using FastAPI. 
 
 ## Run
-First build and run the image:
+Either build and run the image:
 ``` 
 docker build -t aeneas-server:latest .
 docker run -p80:80 aeneas:latest
 ```
-Then send POST requests to `http://localhost/`.
+Or use docker hub:
+```
+docker run -p80:80 eduardsubert/aeneas:latest
+```
 
+## Request
+Send POST requests to `http://localhost/`.
 Documentation is available at `http://localhost/docs` (the server needs to be running).
 
-## Example request in python
+### Example request in python
 ```python
 import requests
 
