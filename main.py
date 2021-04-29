@@ -42,7 +42,8 @@ class InputDataFiles(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "source_language": "en",
+                "language": "eng",
+                "text_file_format": "plain",
                 "audio_filename": "/data/en.audio",
                 "transcript_filename": "/data/en.transcript",
                 "alignment_filename": "/data/en.audio.alignment",
